@@ -10,6 +10,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 
@@ -258,6 +259,20 @@ def build_alert(item):
     )
 
 
+def build_heartbeat():
+    kst = timezone(timedelta(hours=9))
+    now_kst = datetime.now(kst).strftime("%Y-%m-%d %H:%M:%S KST")
+    source_lines = "\n".join(f"- {source['name']}" for source in SOURCES)
+    return (
+        "[MSTU Alert] 감시 상태 확인\n\n"
+        "MSTU 분할/병합 감시가 실행 중입니다.\n"
+        f"Time: {now_kst}\n\n"
+        "Monitoring:\n"
+        f"{source_lines}\n\n"
+        "새 MSTU 분할/병합 관련 소식이 발견되면 별도 알림을 보냅니다."
+    )
+
+
 def collect_matches():
     matches = []
     errors = []
@@ -365,6 +380,7 @@ def main():
     parser = argparse.ArgumentParser(description="MSTU split/reverse split Telegram monitor")
     parser.add_argument("--test-telegram", action="store_true", help="send a test Telegram message")
     parser.add_argument("--check-once", action="store_true", help="check sources once")
+    parser.add_argument("--heartbeat", action="store_true", help="send a monitoring status Telegram message")
     parser.add_argument("--show-sources", action="store_true", help="show monitored sources and keywords")
     parser.add_argument("--preview", action="store_true", help="check sources and print matches without Telegram alerts")
     args = parser.parse_args()
@@ -385,6 +401,11 @@ def main():
             "[MSTU Alert] 테스트 메시지입니다. 이 메시지가 보이면 텔레그램 설정이 정상입니다.",
         )
         print("Test message sent.")
+        return
+
+    if args.heartbeat:
+        send_telegram(config, build_heartbeat())
+        print("Heartbeat message sent.")
         return
 
     if args.check_once:
