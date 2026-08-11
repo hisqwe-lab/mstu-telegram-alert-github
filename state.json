@@ -13,6 +13,8 @@
     "f71f933328740071f1d9dc6f6af4d6cc97c1145b5a8aea8651d5a8584db11a19"
   ],
   "created_at": 1783053438,
-  "last_checked_at": 1786406317,
-  "last_error": []
+  "last_checked_at": 1786413126,
+  "last_error": [
+    "SEC EDGAR MSTU feed: The read operation timed out"
+  ]
 }
