@@ -40,6 +40,8 @@
     "fbca2b0c08e68680679097f94149a7763b4928bb4f7701eda753ef5afed48f68"
   ],
   "created_at": 1783053438,
-  "last_checked_at": 1793431709,
-  "last_error": []
+  "last_checked_at": 1793454443,
+  "last_error": [
+    "Google News MSTU split search: HTTP Error 503: Service Unavailable"
+  ]
 }
